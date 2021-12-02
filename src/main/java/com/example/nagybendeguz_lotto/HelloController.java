@@ -4,8 +4,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class HelloController {
@@ -42,7 +40,10 @@ public class HelloController {
             Random r = new Random();
             int eredmenyRandom = r.nextInt(90) + 1;
             if (lista.contains(eredmenyRandom)) {
-                eredmenyRandom = r.nextInt(90) + 1;
+                do {
+                    eredmenyRandom = r.nextInt(90) + 1;
+                }
+                while (lista.contains(eredmenyRandom));
             }
             int eredmeny = eredmenyRandom;
 
@@ -51,10 +52,10 @@ public class HelloController {
                 @Override
                 public void run() {
                     timerAnimacio.cancel();
-
                     lista.add(eredmeny);
                     Platform.runLater(() -> nagySzam.setText(String.format("%d", eredmeny)));
-                    Platform.runLater(() -> kiirtSzamok.setText(kiirtSzamok.getText() + String.format("%d ", lista.get(lista.size() - 1))));
+                    Platform.runLater(() -> kiirtSzamok.setText(kiirtSzamok.getText() + String.format(
+                            "%d ", lista.get(lista.size() - 1))));
                     if (lista.size() >= 5) {
                         timer.cancel();
                         Platform.runLater(() -> btnSorsolRendez.setText("Rendez"));
@@ -66,7 +67,8 @@ public class HelloController {
         }
         else if (feladat == 1) {
             Collections.sort(lista);
-            kiirtSzamok.setText(String.format("%d %d %d %d %d", lista.get(0), lista.get(1), lista.get(2), lista.get(3), lista.get(4)));
+            kiirtSzamok.setText(String.format("%d %d %d %d %d",
+                    lista.get(0), lista.get(1), lista.get(2), lista.get(3), lista.get(4)));
             btnSorsolRendez.setText("Újra");
             feladat++;
         }
@@ -74,7 +76,7 @@ public class HelloController {
             lista.clear();
             kiirtSzamok.setText("");
             nagySzam.setText("");
-            btnSorsolRendez.setText("Sorol");
+            btnSorsolRendez.setText("Sorsol");
             feladat = 0;
         }
     }
